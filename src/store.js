@@ -1,22 +1,30 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux'
-import ReduxThunk from 'redux-thunk'
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import ReduxThunk from "redux-thunk";
 
-const initialState = {}
+const initialState = {};
 
-const AppReducer = (state=initialState, action) => {
+const JobsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'ACTION':
-      return state
+    case "FETCH_POSTS_SUCCESS":
+      return action.response;
     default:
-      return state
+      return state;
   }
-}
+};
+
+const ErrorReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "FETCH_POSTS_FAILURE":
+      return action.error;
+    default:
+      return state;
+  }
+};
 
 export default createStore(
   combineReducers({
-    app: AppReducer
+    jobs: JobsReducer,
+    error: ErrorReducer
   }),
-  applyMiddleware(
-    ReduxThunk
-  )
-)
+  applyMiddleware(ReduxThunk)
+);
