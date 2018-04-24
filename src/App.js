@@ -1,27 +1,39 @@
-import React, { Component } from 'react'
-import logo from './logo.svg'
-import './App.css'
-import { connect } from 'react-redux'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Jobs from "./components/Jobs";
+import "./App.css";
+import { apiGetJobs, updateJobs } from "./actions";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <Jobs
+          updateJobs={this.props.updateJobs}
+          apiGetJobs={this.props.apiGetJobs}
+          jobs={this.props.jobs}
+        />
       </div>
     );
   }
 }
 
-export default connect(
-  state=>({
+// export default connect(state => ({ error: state.error, jobs: state.jobs }), {
+//   apiGetJobs,
+//   updateJobs: (jobs) => {dispatch(updateJobs(jobs))}
+// })(App);
 
-  }),
-  {}
-)(App)
+const mapStateToProps = state => ({
+  error: state.error,
+  jobs: state.jobs
+});
+
+const mapDispatchToProps = dispatch => ({
+  apiGetJobs: () => dispatch(apiGetJobs()),
+  updateJobs: jobs => dispatch(updateJobs(jobs))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
